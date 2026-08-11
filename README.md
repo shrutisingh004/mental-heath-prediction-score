@@ -2,9 +2,6 @@
 
 A machine learning web app that predicts a student's mental health score (0-10) from their social media habits, sleep, study, and lifestyle patterns. 
 
-FastAPI backend, vanilla JS frontend, no frameworks.
-
-
 ## Overview
 
 Rhythm takes a student's daily habits : screen time, sleep, study hours, physical activity, stress level, and platform usage - and returns a predicted mental health score from a model trained on real survey data. The frontend visualizes how those hours add up across a 24-hour day before the person even submits, then shows the prediction on a simple gauge.

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rhythm &mdash; Student Mental Health Score</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__mark">
+      <span class="topbar__dot" aria-hidden="true"></span>
+      Rhythm
+    </div>
+    <p class="topbar__tag">Digital habits &amp; wellbeing predictor</p>
+  </header>
+
+  <main class="layout">
+
+    <section class="intro" aria-labelledby="intro-heading">
+      <h1 id="intro-heading" class="intro__title">
+        How your day <em>adds up</em>
+      </h1>
+      <p class="intro__body">
+        Sleep, screen time, study, and movement all draw from the same
+        24&nbsp;hours. Fill in the form and watch the dial fill in with you &mdash;
+        then get a predicted mental health score from a model trained on
+        student social&nbsp;media habits.
+      </p>
+
+      <div class="dial-card">
+        <svg id="dial" class="dial" viewBox="0 0 320 320" role="img" aria-label="Ring showing how today's 24 hours are allocated across sleep, screen use, study, and activity">
+          <circle class="dial__track" cx="160" cy="160" r="130"></circle>
+          <g id="dial-arcs"></g>
+          <circle class="dial__inner" cx="160" cy="160" r="96"></circle>
+          <text x="160" y="150" text-anchor="middle" class="dial__hours" id="dial-total">0.0</text>
+          <text x="160" y="174" text-anchor="middle" class="dial__label">of 24 hrs mapped</text>
+        </svg>
+
+        <ul class="legend" id="legend">
+          <li><span class="legend__swatch" data-swatch="sleep"></span>Sleep <span class="legend__val" id="leg-sleep">0h</span></li>
+          <li><span class="legend__swatch" data-swatch="usage"></span>Screen use <span class="legend__val" id="leg-usage">0h</span></li>
+          <li><span class="legend__swatch" data-swatch="study"></span>Study <span class="legend__val" id="leg-study">0h</span></li>
+          <li><span class="legend__swatch" data-swatch="activity"></span>Activity <span class="legend__val" id="leg-activity">0h</span></li>
+        </ul>
+        <p class="dial__note" id="dial-overflow" hidden>
+          That's more than 24 hours &mdash; double check your entries below.
+        </p>
+      </div>
+    </section>
+
+    <section class="form-panel" aria-labelledby="form-heading">
+      <div class="card">
+        <h2 id="form-heading" class="card__title">Tell us about your day</h2>
+        <p class="card__subtitle">All fields are required.</p>
+
+        <form id="predict-form" novalidate>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="age">Age</label>
+              <input type="number" id="age" name="age" min="10" max="100" step="1" placeholder="e.g. 21" required>
+              <span class="field__error" id="err-age"></span>
+            </div>
+
+            <div class="field">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select&hellip;</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <span class="field__error" id="err-gender"></span>
+            </div>
+
+            <div class="field field--wide">
+              <label for="country">Country</label>
+              <input type="text" id="country" name="country" list="country-list" placeholder="e.g. India" autocomplete="off" required>
+              <datalist id="country-list">
+                <option value="India"><option value="USA"><option value="Canada">
+                <option value="Australia"><option value="UK"><option value="Germany">
+                <option value="Mexico"><option value="Turkey"><option value="France">
+              </datalist>
+              <p class="field__hint">Don't see your country? Just type it.</p>
+              <span class="field__error" id="err-country"></span>
+            </div>
+
+            <div class="field">
+              <label for="academic_level">Academic level</label>
+              <select id="academic_level" name="academic_level" required>
+                <option value="" disabled selected>Select&hellip;</option>
+                <option value="High School">High School</option>
+                <option value="Undergraduate">Undergraduate</option>
+                <option value="Graduate">Graduate</option>
+              </select>
+              <span class="field__error" id="err-academic_level"></span>
+            </div>
+
+            <div class="field">
+              <label for="most_used_platform">Most used platform</label>
+              <select id="most_used_platform" name="most_used_platform" required>
+                <option value="" disabled selected>Select&hellip;</option>
+                <option>Facebook</option><option>LinkedIn</option><option>Instagram</option>
+                <option>Snapchat</option><option>Twitter</option><option>YouTube</option>
+                <option>TikTok</option><option>LINE</option><option>KakaoTalk</option>
+                <option>VKontakte</option><option>WhatsApp</option><option>WeChat</option>
+              </select>
+              <span class="field__error" id="err-most_used_platform"></span>
+            </div>
+
+            <div class="field">
+              <label for="purpose_of_use">Main purpose of use</label>
+              <select id="purpose_of_use" name="purpose_of_use" required>
+                <option value="" disabled selected>Select&hellip;</option>
+                <option value="Networking">Networking</option>
+                <option value="Education">Education</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="News">News</option>
+              </select>
+              <span class="field__error" id="err-purpose_of_use"></span>
+            </div>
+
+            <div class="field">
+              <label for="avg_daily_usage_hours">Avg. daily screen use (hrs)</label>
+              <input type="number" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.1" placeholder="e.g. 4.5" required>
+              <span class="field__error" id="err-avg_daily_usage_hours"></span>
+            </div>
+
+            <div class="field">
+              <label for="daily_unlocks">Daily phone unlocks</label>
+              <input type="number" id="daily_unlocks" name="daily_unlocks" min="0" step="1" placeholder="e.g. 60" required>
+              <span class="field__error" id="err-daily_unlocks"></span>
+            </div>
+
+            <div class="field">
+              <label for="study_hours">Study hours / day</label>
+              <input type="number" id="study_hours" name="study_hours" min="0" max="24" step="0.1" placeholder="e.g. 3" required>
+              <span class="field__error" id="err-study_hours"></span>
+            </div>
+
+            <div class="field">
+              <label for="physical_activity_hours">Physical activity (hrs)</label>
+              <input type="number" id="physical_activity_hours" name="physical_activity_hours" min="0" max="24" step="0.1" placeholder="e.g. 1" required>
+              <span class="field__error" id="err-physical_activity_hours"></span>
+            </div>
+
+            <div class="field">
+              <label for="sleep_hours_per_night">Sleep / night (hrs)</label>
+              <input type="number" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.1" placeholder="e.g. 7" required>
+              <span class="field__error" id="err-sleep_hours_per_night"></span>
+            </div>
+
+            <div class="field">
+              <label for="stress_level">Self-rated stress level</label>
+              <select id="stress_level" name="stress_level" required>
+                <option value="" disabled selected>Select&hellip;</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Very High">Very High</option>
+              </select>
+              <span class="field__error" id="err-stress_level"></span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-predict" id="submit-btn">
+            <span class="btn-predict__label">Predict my score</span>
+            <span class="btn-predict__spinner" aria-hidden="true"></span>
+          </button>
+
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+        </form>
+      </div>
+
+      <div class="card card--result" id="result-card" hidden aria-live="polite">
+        <h2 class="card__title">Your predicted score</h2>
+        <div class="gauge-wrap">
+          <svg id="gauge" class="gauge" viewBox="0 0 260 150">
+            <path class="gauge__track" d="M 30 140 A 110 110 0 0 1 230 140"></path>
+            <path class="gauge__fill" id="gauge-fill" d="M 30 140 A 110 110 0 0 1 230 140"></path>
+            <line id="gauge-needle" class="gauge__needle" x1="130" y1="140" x2="130" y2="45"></line>
+            <circle cx="130" cy="140" r="7" class="gauge__hub"></circle>
+          </svg>
+          <div class="gauge__score" id="gauge-score">&mdash;</div>
+        </div>
+        <p class="result__hint">Scored on a 0&ndash;10 scale, as predicted by the model.</p>
+        <p class="result__disclaimer">
+          This is a statistical estimate from a machine learning model, not a
+          clinical assessment. If you're struggling, please talk to a
+          counselor, doctor, or someone you trust.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

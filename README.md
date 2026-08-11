@@ -1,6 +1,7 @@
 # Rhythm : Student Mental Health Score Predictor
 
 A machine learning web app that predicts a student's mental health score (0-10) from their social media habits, sleep, study, and lifestyle patterns. 
+
 FastAPI backend, vanilla JS frontend, no frameworks.
 
 

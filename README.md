@@ -25,7 +25,7 @@ project/
 ├── backend/
 │   ├── main.py              # FastAPI app + /predict endpoint
 │   ├── requirements.txt
-│   └── mental-health-model.pkl   # not tracked — see Model section
+│   └── mental-health-model.pkl
 ├── frontend/
 │   ├── index.html
 │   ├── style.css

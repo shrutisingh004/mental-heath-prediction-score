@@ -1,47 +1,107 @@
-# Rhythm : Student Mental Health Score Predictor
+<h1 align="center">Rhythm</h1>
+<p align="center"><strong>Predict a student's mental health score from their daily digital habits.</strong></p>
 
-A machine learning web app that predicts a student's mental health score (0-10) from their social media habits, sleep, study, and lifestyle patterns. 
+<p align="center">
+  <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"></a>
+  <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI"></a>
+  <a href="https://scikit-learn.org"><img src="https://img.shields.io/badge/scikit--learn-model-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" alt="scikit-learn"></a>
+  <a href="https://huggingface.co/shrutisingh004/mental-health-model"><img src="https://img.shields.io/badge/HuggingFace-model-FFD21E?style=flat-square&logo=huggingface&logoColor=black" alt="Hugging Face"></a>
+  <a href="https://render.com"><img src="https://img.shields.io/badge/Render-deployed-46E3B7?style=flat-square&logo=render&logoColor=white" alt="Render"></a>
+</p>
 
-## Overview
+<p align="center">
+  <a href="https://mental-heath-score.onrender.com"><img src="https://img.shields.io/badge/Live%20Demo-mental--heath--score.onrender.com-3F6C63?style=for-the-badge" alt="Live Demo"></a>
+</p>
 
-Rhythm takes a student's daily habits : screen time, sleep, study hours, physical activity, stress level, and platform usage - and returns a predicted mental health score from a model trained on real survey data. The frontend visualizes how those hours add up across a 24-hour day before the person even submits, then shows the prediction on a simple gauge.
+---
 
-## Tech stack
+## What It Does
 
-| Layer | Tools |
-|---|---|
-| Backend | FastAPI, scikit-learn, pandas, joblib |
-| Frontend | HTML, CSS, vanilla JavaScript |
-| Model training | Jupyter, pandas, seaborn/matplotlib, scikit-learn |
-| Model hosting | Hugging Face Hub |
+Rhythm is a machine learning app that scores a student's mental health on a 0 to 10 scale, based on daily habits: screen time, sleep, study, physical activity, and self reported stress. As you fill in the form, a live dial shows how those hours add up across a 24 hour day, so you see the shape of your routine before you even see the prediction.
 
-No React, no Vue, no build step - the frontend runs as static files.
-
-## Project structure
+## How It Works
 
 ```
-project/
+Form input (age, sleep, screen time, study, activity, stress...)
+        │
+        ▼
+FastAPI /predict endpoint
+        │
+        ▼
+scikit-learn model  ←  trained on 700+ student survey responses
+        │
+        ▼
+Predicted mental health score (0-10)
+```
+
+| Component | Technology |
+|---|---|
+| Backend | FastAPI |
+| Model | scikit-learn, trained in a Jupyter notebook |
+| Model hosting | Hugging Face Hub |
+| Frontend | HTML, CSS, vanilla JavaScript |
+| Deployment | Render |
+
+## Project Structure
+
+```
+mental-heath-prediction-score/
+│
 ├── backend/
-│   ├── main.py              # FastAPI app + /predict endpoint
-│   ├── requirements.txt
-│   └── mental-health-model.pkl
+│   ├── main.py               # FastAPI app, /predict endpoint, serves frontend/
+│   └── requirements.txt
+│
 ├── frontend/
 │   ├── index.html
 │   ├── style.css
 │   └── script.js
+│
 ├── model/
-│   ├── training.ipynb        # EDA, cleaning, and model training
+│   ├── training.ipynb         # EDA, cleaning, and model training
 │   └── Student Social Media And Mental Health Impact.csv
-├── .gitignore
-└── README.md
+│
+└── .gitignore
 ```
 
+## Getting Started
 
-## API reference
+### Prerequisites
 
-### `POST /predict`
+- Python 3.10 or higher
 
-**Request body**
+### Installation
+
+**1. Clone the repository**
+
+```
+git clone https://github.com/shrutisingh004/mental-heath-prediction-score.git
+cd mental-heath-prediction-score/backend
+```
+
+**2. Install dependencies**
+
+```
+pip install -r requirements.txt
+```
+
+**3. Run the app**
+
+```
+uvicorn main:app --reload
+```
+
+Open `http://127.0.0.1:8000`. The model downloads automatically from Hugging Face on startup, and the frontend is served from the same address, so there's nothing else to run.
+
+## Usage
+
+1. Fill in your age, gender, country, and academic level
+2. Add your daily habits: screen time, phone unlocks, study hours, physical activity, sleep, and stress level
+3. Watch the dial fill in as you type, showing how your day adds up
+4. Hit **Predict my score** and see your result on the gauge
+
+## API Reference
+
+**`POST /predict`**
 
 ```json
 {
@@ -66,23 +126,18 @@ project/
 { "predicted_mental_health_score": 6.42 }
 ```
 
-| Field | Type | Notes |
-|---|---|---|
-| `age` | int | 10–100 |
-| `gender` | string | `Male`, `Female` |
-| `country` | string | any value accepted; grouped server-side as "Other" if outside the model's top countries |
-| `academic_level` | string | `High School`, `Undergraduate`, `Graduate` |
-| `most_used_platform` | string | one of 12 supported platforms |
-| `purpose_of_use` | string | `Networking`, `Education`, `Entertainment`, `News` |
-| `avg_daily_usage_hours` | float | 0–24 |
-| `daily_unlocks` | int | ≥ 0 |
-| `study_hours` | float | 0–24 |
-| `physical_activity_hours` | float | 0–24 |
-| `sleep_hours_per_night` | float | 0–24 |
-| `stress_level` | string | `Low`, `Medium`, `High`, `Very High` |
+Full docs with interactive testing at `/docs` on either the local or live app.
 
-Invalid input returns `422 Unprocessable Entity` with FastAPI's standard validation error detail.
+## Deployment
+
+Deployed on Render as a single web service. FastAPI serves the frontend directly, so both live at one URL: [mental-heath-score.onrender.com](https://mental-heath-score.onrender.com).
+
+Free tier, so the first request after a period of inactivity can take 30 to 60 seconds while the instance wakes up.
 
 ## Disclaimer
 
-This is a statistical estimate from a machine learning model trained on survey data, not a clinical or diagnostic tool. If you're concerned about your mental health, please talk to a counselor, doctor, or someone you trust.
+This is a statistical estimate from a model trained on survey data, not a clinical or diagnostic tool. If you're concerned about your mental health, please talk to a counselor, doctor, or someone you trust.
+
+---
+
+<p align="center"><em>Built with FastAPI · scikit-learn · Hugging Face · vanilla JS</em></p>

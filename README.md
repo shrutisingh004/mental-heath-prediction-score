@@ -130,9 +130,7 @@ Full docs with interactive testing at `/docs` on either the local or live app.
 
 ## Deployment
 
-Deployed on Render as a single web service. FastAPI serves the frontend directly, so both live at one URL: [mental-heath-score.onrender.com](https://mental-heath-score.onrender.com).
-
-Free tier, so the first request after a period of inactivity can take 30 to 60 seconds while the instance wakes up.
+Deployed on Render as a single web service. FastAPI serves the frontend directly, so both live at one URL: [mental-heath-score.onrender.com](https://mental-heath-score.onrender.com)
 
 ## Disclaimer
 

@@ -49,7 +49,8 @@ mental-heath-prediction-score/
 │
 ├── backend/
 │   ├── main.py               # FastAPI app, /predict endpoint, serves frontend/
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── mental-health-model.pkl  # trained model, also mirrored on Hugging Face
 │
 ├── frontend/
 │   ├── index.html
@@ -130,7 +131,7 @@ Full docs with interactive testing at `/docs` on either the local or live app.
 
 ## Deployment
 
-Deployed on Render as a single web service. FastAPI serves the frontend directly, so both live at one URL: [mental-heath-score.onrender.com](https://mental-heath-score.onrender.com)
+Deployed on Render as a single web service. FastAPI serves the frontend directly, so both live at one URL: [mental-heath-score.onrender.com](https://mental-heath-score.onrender.com).
 
 ## Disclaimer
 
